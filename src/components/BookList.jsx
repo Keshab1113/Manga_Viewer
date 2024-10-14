@@ -11,11 +11,11 @@ const BookList = ({ selectedBook, onBookSelect }) => {
     }, []);
 
     return (
-        <div className="flex justify-center space-x-4 bg-gray-800 p-4">
+        <div className="flex justify-center space-x-4 p-4">
             {books.map((book) => (
                 <button
                     key={book.id}
-                    className={`text-white ${selectedBook === book.id ? 'bg-blue-500' : 'bg-gray-700'} px-4 py-2 rounded`}
+                    className={` font-semibold ${selectedBook === book.id ? 'bg-gray-500 text-white' : 'bg-gray-200 text-black'} px-4 py-2 rounded`}
                     onClick={() => onBookSelect(book.id)}
                 >
                     {book.title}
