@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const BookList = ({ selectedBook, onBookSelect }) => {
     const [books, setBooks] = useState([]);
-    
+
     useEffect(() => {
         axios.get('http://52.195.171.228:8080/books/')
             .then(res => setBooks(res.data))

@@ -9,33 +9,16 @@ function App() {
   const [chapters, setChapters] = useState([]);
   const [selectedChapter, setSelectedChapter] = useState(null);
 
-  // Fetch chapters whenever a new book is selected
   useEffect(() => {
     if (selectedBook) {
       axios.get(`http://52.195.171.228:8080/books/${selectedBook}/`)
         .then(res => {
           setChapters(res.data.chapter_ids);
-          setSelectedChapter(res.data.chapter_ids[0]);  // Start with the first chapter by default
+          setSelectedChapter(res.data.chapter_ids[0]);  // Set first chapter as default
         })
         .catch(err => console.error(err));
     }
   }, [selectedBook]);
-
-  const handleNextChapter = () => {
-    const currentChapterIndex = chapters.findIndex(chapter => chapter === selectedChapter);
-    console.log(currentChapterIndex);
-    if (currentChapterIndex < chapters.length - 1) {
-      setSelectedChapter(chapters[currentChapterIndex + 1]);
-    }
-  };
-
-  const handlePreviousChapter = () => {
-    const currentChapterIndex = chapters.findIndex(chapter => chapter === selectedChapter);
-    if (currentChapterIndex > 0) {
-      setSelectedChapter(chapters[currentChapterIndex - 1]);
-    }
-  };
-  
 
   return (
     <div className="h-screen flex flex-col">
@@ -46,11 +29,18 @@ function App() {
           selectedChapter={selectedChapter}
           onChapterSelect={setSelectedChapter}
         />
-
       )}
       {selectedChapter && (
         <MangaViewer
           chapterId={selectedChapter}
+          changeChapter={(direction) => {
+            const currentChapterIndex = chapters.indexOf(selectedChapter);
+            if (direction === 'next' && currentChapterIndex < chapters.length - 1) {
+              setSelectedChapter(chapters[currentChapterIndex + 1]);
+            } else if (direction === 'previous' && currentChapterIndex > 0) {
+              setSelectedChapter(chapters[currentChapterIndex - 1]);
+            }
+          }}
         />
       )}
     </div>
